@@ -1,21 +1,25 @@
 package main
 
-import "fmt"
-import "os"
-import "log"
-import "time"
-import "reflect"
+import (
+	"fmt"
+	"os"
+	"log"
+	"time"
+	"reflect"
+
+	"github.com/sdb1228/ballClockGo/helper"
+)
 
 func main() {
 	start := time.Now()
 	if len(os.Args) > 2 {
-		balls, minutes, err := parseBallsAndMinutes(os.Args[1], os.Args[2])
+		balls, minutes, err := helper.ParseBallsAndMinutes(os.Args[1], os.Args[2])
 		if err != nil {
 			log.Fatal(err)
 		}
 		calculateClockWithMinutes(balls, minutes)
 	} else {
-		balls, _, err := parseBallsAndMinutes(os.Args[1], "0")
+		balls, _, err := helper.ParseBallsAndMinutes(os.Args[1], "0")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -26,7 +30,7 @@ func main() {
 }
 
 func calculateClockWithMinutes(balls int, minutes int) {
-	queue := makeRange(1, balls)
+	queue := helper.MakeRange(1, balls)
 	var oneMinuteShaft []int
 	var fiveMinuteShaft []int
 	var oneHourShaft []int
@@ -36,23 +40,23 @@ func calculateClockWithMinutes(balls int, minutes int) {
 			queue = queue[1:]
 			continue
 		} else if len(oneMinuteShaft) == 4 && len(fiveMinuteShaft) != 11 {
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
 			oneMinuteShaft = nil
 			fiveMinuteShaft = append(fiveMinuteShaft, queue[0])
 			queue = queue[1:]
 			continue
 		} else if len(oneMinuteShaft) == 4 && len(fiveMinuteShaft) == 11 && len(oneHourShaft) != 11 {
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
-			queue = append(queue, reverseArray(fiveMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(fiveMinuteShaft)...)
 			oneMinuteShaft = nil
 			fiveMinuteShaft = nil
 			oneHourShaft = append(oneHourShaft, queue[0])
 			queue = queue[1:]
 			continue
 		} else {
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
-			queue = append(queue, reverseArray(fiveMinuteShaft)...)
-			queue = append(queue, reverseArray(oneHourShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(fiveMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneHourShaft)...)
 			lastBall := queue[0]
 			queue = queue[1:]
 			queue = append(queue, lastBall)
@@ -65,8 +69,8 @@ func calculateClockWithMinutes(balls int, minutes int) {
 }
 
 func calculateClockWithoutMinutes(balls int) {
-	queue := makeRange(1, balls)
-	start := makeRange(1, balls)
+	queue := helper.MakeRange(1, balls)
+	start := helper.MakeRange(1, balls)
 	var oneMinuteShaft []int
 	var fiveMinuteShaft []int
 	var oneHourShaft []int
@@ -78,14 +82,14 @@ func calculateClockWithoutMinutes(balls int) {
 			queue = queue[1:]
 			continue
 		} else if len(oneMinuteShaft) == 4 && len(fiveMinuteShaft) != 11 {
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
 			oneMinuteShaft = nil
 			fiveMinuteShaft = append(fiveMinuteShaft, queue[0])
 			queue = queue[1:]
 			continue
 		} else if len(oneMinuteShaft) == 4 && len(fiveMinuteShaft) == 11 && len(oneHourShaft) != 11 {
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
-			queue = append(queue, reverseArray(fiveMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(fiveMinuteShaft)...)
 			oneMinuteShaft = nil
 			fiveMinuteShaft = nil
 			oneHourShaft = append(oneHourShaft, queue[0])
@@ -93,9 +97,9 @@ func calculateClockWithoutMinutes(balls int) {
 			continue
 		} else {
 			count++
-			queue = append(queue, reverseArray(oneMinuteShaft)...)
-			queue = append(queue, reverseArray(fiveMinuteShaft)...)
-			queue = append(queue, reverseArray(oneHourShaft)...)
+			queue = append(queue, helper.ReverseArray(oneMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(fiveMinuteShaft)...)
+			queue = append(queue, helper.ReverseArray(oneHourShaft)...)
 			lastBall := queue[0]
 			queue = queue[1:]
 			queue = append(queue, lastBall)

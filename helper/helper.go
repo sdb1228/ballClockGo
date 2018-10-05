@@ -1,4 +1,4 @@
-package main
+package helper
 
 import "strconv"
 import "errors"
@@ -6,7 +6,7 @@ import "errors"
 const MAXBALLS = 127
 const MINBALLS = 27
 
-func parseBallsAndMinutes(ballsInput string, minutesInput string) (balls int, minutes int, err error) {
+func ParseBallsAndMinutes(ballsInput string, minutesInput string) (balls int, minutes int, err error) {
 	balls, ballErr := strconv.Atoi(ballsInput)
 	minutes, minuteErr := strconv.Atoi(minutesInput)
 	if ballErr != nil {
@@ -24,7 +24,7 @@ func parseBallsAndMinutes(ballsInput string, minutesInput string) (balls int, mi
 	return balls, minutes, nil
 }
 
-func makeRange(min, max int) []int {
+func MakeRange(min, max int) []int {
 	a := make([]int, max-min+1)
 	for i := range a {
 		a[i] = min + i
@@ -32,7 +32,7 @@ func makeRange(min, max int) []int {
 	return a
 }
 
-func reverseArray(array []int) []int {
+func ReverseArray(array []int) []int {
 	for i, j := 0, len(array)-1; i < j; i, j = i+1, j-1 {
 		array[i], array[j] = array[j], array[i]
 	}
